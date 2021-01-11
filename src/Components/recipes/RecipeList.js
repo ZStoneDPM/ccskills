@@ -60,7 +60,7 @@ class RecipeList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{width: window.visualViewport.width * .8, marginRight: 'auto', marginLeft: 'auto'}}>
         <h2>Recipes</h2>
         <div className="ui celled list">{this.renderList()}</div>
         {this.renderCreate()}

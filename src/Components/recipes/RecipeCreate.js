@@ -10,7 +10,7 @@ class RecipeCreate extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{width: window.visualViewport.width * .8, marginRight: 'auto', marginLeft: 'auto'}}>
         <h3>Create a Recipe</h3>
         <RecipeForm onSubmit={this.onSubmit} />
       </div>

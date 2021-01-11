@@ -19,7 +19,7 @@ class RecipeEdit extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{width: window.visualViewport.width * .8, marginRight: 'auto', marginLeft: 'auto'}}>
         <h3>Edit a Recipe</h3>
         <RecipeForm
           initialValues={_.pick(this.props.recipe, 'title', 'description')}

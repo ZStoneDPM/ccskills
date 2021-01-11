@@ -9,6 +9,7 @@ import RecipeShow from './components/recipes/RecipeShow';
 import EditMenu from './components/recipes/RecipeList';
 import RecipeDetail from './components/recipe_detail';
 import gMap from './components/map';
+import BlankMap from './components/map';
 import Header from '../src/components/header';
 
 // import RecipeDetail from './components/recipe_detail_view';
@@ -22,6 +23,7 @@ const Routing = () => {
           <Route exact path="/RecipeList" component={RecipeList} />
           <Route exact path="/RecipeDetail" component={RecipeDetail} />
           <Route exact path="/map/:lat/:lon" component={gMap} />
+          <Route exact path="/map" component={BlankMap} />
           <Route exact path="/EditMenu" component={EditMenu} />
           <Route path="/recipe/new" exact component={RecipeCreate} />
           <Route path="/recipe/edit/:id" exact component={RecipeEdit} />

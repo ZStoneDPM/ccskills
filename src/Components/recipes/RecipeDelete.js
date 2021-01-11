@@ -2,8 +2,6 @@ import React from 'react';
 import Modal from '../Modal';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-
-import history from '../../history';
 import { fetchRecipe, deleteRecipe } from '../../actions';
 
 class RecipeDelete extends React.Component {
@@ -22,7 +20,7 @@ class RecipeDelete extends React.Component {
         >
           Delete
         </button>
-        <Link to="/" className="ui button">
+        <Link to="/editMenu" className="ui button">
           Cancel
         </Link>
       </React.Fragment>
@@ -45,7 +43,7 @@ class RecipeDelete extends React.Component {
         title="Delete Recipe"
         content={this.renderContent()}
         actions={this.renderActions()}
-        onDismiss={() => history.push('/')}
+        onDismiss={() => window.location = `${window.location.origin}/editMenu`}
       />
     );
   }

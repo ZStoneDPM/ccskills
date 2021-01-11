@@ -96,7 +96,7 @@ class RecipeShow extends React.Component {
       },
       topTitle: {
         position: "sticky",
-        top: 56,
+        top: 49,
         left: 0,
         right: 0,
         zIndex: 99,
