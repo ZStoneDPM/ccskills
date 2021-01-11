@@ -1,0 +1,11 @@
+export const CREATE_RECIPE = 'CREATE_RECIPE';
+export const FETCH_RECIPES = 'FETCH_RECIPES';
+export const FETCH_RECIPE = 'FETCH_RECIPE';
+export const DELETE_RECIPE = 'DELETE_RECIPE';
+export const EDIT_RECIPE = 'EDIT_RECIPE';
+
+export const CREATE_SPECIAL = 'CREATE_SPECIAL';
+export const FETCH_SPECIAL = 'FETCH_SPECIAL';
+export const FETCH_SPECIALS = 'FETCH_SPECIALS';
+export const DELETE_SPECIAL = 'DELETE_SPECIAL';
+export const EDIT_SPECIAL = 'EDIT_SPECIAL';

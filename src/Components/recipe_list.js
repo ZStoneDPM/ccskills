@@ -1,64 +1,67 @@
 import React, { Component } from "react";
 import { connect } from 'react-redux';
-import {
-  updateRecipeDetail
-} from "../reducers/user";
-import Header from "./header";
+import { Button } from "react-bootstrap";
+import { Link } from 'react-router-dom';
+import { fetchRecipes } from '../actions';
+import noImage from '../assets/noimage.jpeg';
  
-// const Recipe = ({ this.props.user.recipes, apiRoot }) => {
   class Recipe extends Component {
-      viewRecipe(value){
-        this.props.dispatch(updateRecipeDetail(this.props.user.updateRecipesData[value]));
-        window.location = `${window.location.origin}/RecipeDetail`;
-        // console.log('item: '+JSON.stringify(this.props.user.updateRecipesData[value]));
+
+      componentDidMount() {
+        this.props.fetchRecipes();
       }
-      
+      ifHasImage(index){
+        const apiRoot = 'http://localhost:3001';
+        const recipes = this.props.recipes[index];
+        if(recipes.hasOwnProperty('images')){
+          return `${apiRoot}${recipes.images.small}`;
+        } else {
+          return `${window.location.origin}${noImage}`
+        }
+      }
     render(){
-      const recipes = this.props.user.updateRecipesData;
-      const apiRoot = this.props.user.updateAPIRoot;
-      // console.log(`test1: ${this.props.user.updateRecipesData}`)
   return (
-    <div>
-      <Header />
+    <React.Fragment>
       <center style={{position: 'sticky', top:56,left:0,right:0, zIndex: 99, background: '#fff', paddingBottom: 5, borderBottom: 'solid 1px black'}}>
         <h1>Recipe List</h1>
       </center>
-      {recipes.map((recipes, index) => (
-        <div className="card text-center" key={recipes.uuid}>
+      {this.props.recipes.map((recipe, index) => (
+        <div className="card text-center" key={recipe.uuid}>
           <div className="card-body">
-            <h5 className="card-title">{recipes.title}</h5>
+            <h5 className="card-title">{recipe.title}</h5>
             <h6 className="card-subtitle mb-2 text-muted">
-              {recipes.description}
+              {recipe.description}
             </h6>
             <p className="card-img">
               <img
-                alt={recipes.title}
-                src={`${apiRoot}${recipes.images.small}`}
+                alt={recipe.title}
+                src={`${this.ifHasImage(index)}`/*recipe.images.full */}
               />
             </p>
             <h6 className="card-subtitle mb-2 text-muted">
-            Serves: {recipes.servings} / Prep-time: {recipes.prepTime} / Cook-time: {recipes.cookTime}
+            Serves: {recipe.servings} / Prep-time: {recipe.prepTime} / Cook-time: {recipe.cookTime}
             </h6>
           </div>
           <p>
-            <button
-              className="btn btn-primary"
-              type="button"
-              onClick={()=>this.viewRecipe(index)}     
-            >
-              View Recipe
-            </button>
+          <Link to={`/recipe/${recipe.uuid}`} className="header">
+                    <Button
+                      className="btn btn-primary"
+                      type="button"
+                    >
+                      View Recipe
+                    </Button> 
+                    </Link>
           </p>
         </div>
       ))}
-    </div>
+    </React.Fragment>
   );
 };
   }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   user: state.user,
+  recipes: Object.values(state.recipes)
 });
 
-export default connect(mapStateToProps)(Recipe);
-
+export default connect(mapStateToProps, { fetchRecipes })(Recipe);

@@ -1,32 +1,40 @@
-import React, { Component } from "react";
+import React from 'react';
 import { Table, ListGroup, Card, Alert, Button } from "react-bootstrap";
-import { updateMarker } from "../reducers/user";
+import { updateMarker } from "../../reducers/user";
 import { connect } from "react-redux";
-import { fetchRecipe, fetchSpecials } from '../actions';
+import { fetchRecipe, fetchSpecials } from '../../actions';
+import noImage from '../../assets/noimage.jpeg';
 
-// const Recipe = ({ this.props.user.recipes, apiRoot }) => {
-class RecipeDetail extends Component {
+class RecipeShow extends React.Component {
   state={
-    specials: this.props.fetchSpecials(),
-    recipes: this.props.fetchRecipes(),
+    specials: this.props.fetchSpecials()
   }
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchRecipe(id);
+    this.props.fetchSpecials();
   }
-
+  getLat(arr){
+    var lat = arr.match(/([^,]*),(.*)/);
+    // console.log(`lat: ${lat[1]}`)
+    return lat[1];
+}
+  getLon(arr){
+    var lon = arr.match(/([^,]*),(.*)/);
+    // console.log(`lon: ${lon[2]}`)
+    return lon[2];
+}
   viewMap(geo) {
+    
     console.log(geo);
-    //update state
-    this.props.dispatch(updateMarker(geo));
-    window.location = `${window.location.origin}/map`;
+
+    window.location = `${window.location.origin}/map/${this.getLat(geo)}/${this.getLon(geo)}`;
     //go to page
   }
-
-  
-
   checkMatch(ingredientUUID) {
-    const specials = this.props.user.updateSpecialsData;
+    const specials = this.props.specials;
+    console.log('item: '+JSON.stringify(specials));
+    
     return specials.map((specials, index) =>
       specials.ingredientId === ingredientUUID ? ( //if matched
         <Alert key={index} variant="info">
@@ -53,20 +61,32 @@ class RecipeDetail extends Component {
         ""
       )
     );
+  }
 
-    // console.log(match)
+
+  ifHasImage(){
+    const apiRoot = 'http://localhost:3001';
+    const recipes = this.props.recipe;
+    if(recipes.hasOwnProperty('images')){
+      return `${apiRoot}${recipes.images.medium}`;
+    } else {
+      return `${window.location.origin}${noImage}`
+    }
   }
 
   render() {
-    const recipes = this.props.user.recipeDetail;
-    const apiRoot = this.props.user.updateAPIRoot;
-    // const specials = this.props.user.updateSpecialsData;
-    const directions = recipes.directions;
-    const ingredients = recipes.ingredients;
-    const ingredientCount = Object.keys(ingredients).length;
-    // const result = ingredients.filter(x => specials.some(y => x.uuid === y.ingredientId))
-    // console.log(result)
+    if (!this.props.recipe) {
+      return <div>Loading...</div>;
+    }
+  
+    const directions = this.props.recipe.directions;
+    const countIngredients = this.props.recipe.ingredients;
+    const ingredientCount = Object.keys(countIngredients).length;
+    const specials = this.props.specials;
+    console.log('item: '+JSON.stringify(specials));
 
+    const { uuid, title, description, prepTime, servings, cookTime, ingredients,
+     editDate, postDate } = this.props.recipe;
     const styles = {
       cookingInstructions: {
         maxWidth: window.visualViewport.width * 0.6,
@@ -86,38 +106,42 @@ class RecipeDetail extends Component {
       },
     };
     return (
-      <React.Fragment>
+      <div>
+        {/* <h1>{title}</h1>
+        <h5>{description}</h5> */}
+
+        <React.Fragment>
         <center style={styles.topTitle}>
           <h1>Recipe Detail</h1>
         </center>
 
-        <div className="card text-center" key={recipes.uuid}>
+        <div className="card text-center" key={uuid}>
           <div className="card-body">
-            <h5 className="card-title">{recipes.title}</h5>
+            <h5 className="card-title">{title}</h5>
             <h6 className="card-subtitle mb-2 text-muted">
-              {recipes.description}
+              {description}
             </h6>
             <p className="card-img">
               <img
-                alt={recipes.title}
-                src={`${apiRoot}${recipes.images.medium}`}
+                alt={title}
+                src={this.ifHasImage()}
               />
             </p>
             <h6 className="card-subtitle mb-2 text-muted">
-              Serves: {recipes.servings} / Prep-time: {recipes.prepTime} /
-              Cook-time: {recipes.cookTime}
+              Serves: {servings} / Prep-time: {prepTime} /
+              Cook-time: {cookTime}
             </h6>
             <div style={styles.cookingInstructions}>
               <Card>
                 <Card.Body>
-                  <h5 style={{ paddingLeft: 40, lineHeight: 2 }}>
+                  <h5 style={{ textAlign: 'center' }}>
                     Ingredients (Total: {ingredientCount})
                   </h5>
                   <ListGroup>
                     {ingredients.map((ingredients, index) => (
                       <ListGroup.Item key={index}>
                         {ingredients.amount} {ingredients.measurement}{" "}
-                        {ingredients.name} {this.checkMatch(ingredients.uuid)}
+                      {ingredients.name}    {this.checkMatch(ingredients.uuid)}
                       </ListGroup.Item>
                     ))}
                   </ListGroup>
@@ -142,27 +166,31 @@ class RecipeDetail extends Component {
               </Table>
             </div>
             <h6 className="card-subtitle mb-2 text-muted">
-              Originally Posted: {recipes.postDate} || Last Edited:{" "}
-              {recipes.editDate}{" "}
+              Originally Posted: {postDate} || Last Edited:{" "}
+              {editDate}{" "}
             </h6>
           </div>
           <p></p>
         </div>
       </React.Fragment>
+      </div>
     );
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   user: state.user,
-// });
+// const mapStateToProps = (state, ownProps) => {
+//   return { recipe: state.recipes[ownProps.match.params.id] };
+// };
 
-// export default connect(mapStateToProps)(RecipeDetail);
-const mapStateToProps = (state, ownProps) => {
-  return { recipe: state.recipes[ownProps.match.params.id] };
-};
+const mapStateToProps = (state, ownProps) => ({
+  user: state.user,
+  recipes: Object.values(state.recipes),
+  specials: Object.values(state.specials),
+  recipe: state.recipes[ownProps.match.params.id],
+  
+});
 
 export default connect(
   mapStateToProps,
-  { fetchRecipe, fetchSpecials }
-)(RecipeDetail);
+  { fetchRecipe, fetchSpecials, updateMarker }
+)(RecipeShow);

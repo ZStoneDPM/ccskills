@@ -12,10 +12,10 @@ class Header extends Component {
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="mr-auto">
       <Nav.Link href="/RecipeList" >Recipe List</Nav.Link>
-      <Nav.Link href="/Specials" >Specials</Nav.Link>
       <NavDropdown title="Other" id="basic-nav-dropdown">
         <NavDropdown.Item href="/editMenu">Edit Menu</NavDropdown.Item>
         <NavDropdown.Item href="/editSpecials">Edit Specials</NavDropdown.Item>
+        <NavDropdown.Item href="/map">Map</NavDropdown.Item>
       </NavDropdown>
     </Nav>
     {/* <Form inline>
