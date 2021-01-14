@@ -1,27 +1,25 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchRecipes, fetchSpecials } from '../../actions';
+import { fetchSpecials } from '../../actions';
 
-class RecipeList extends React.Component {
+class SpecialList extends React.Component {
   state={
-    recipes: this.props.fetchRecipes(),
     specials: this.props.fetchSpecials()
   }
   componentDidMount() {
-    this.props.fetchRecipes();
     this.props.fetchSpecials();
-    // console.log(this.props.fetchRecipes())
+    // console.log(this.props.fetchSpecials())
   }
 
-  renderAdmin(recipe) {
+  renderAdmin(special) {
       return (
         <div className="right floated content">
-          <Link to={`/recipes/edit/${recipe.uuid}`} className="ui button primary">
+          <Link to={`/specials/edit/${special.uuid}`} className="ui button primary">
             Edit
           </Link>
           <Link
-            to={`/recipe/delete/${recipe.uuid}`}
+            to={`/special/delete/${special.uuid}`}
             className="ui button negative"
           >
             Delete
@@ -32,16 +30,16 @@ class RecipeList extends React.Component {
   }
 
   renderList() {
-    return this.props.recipes.map(recipe => {
+    return this.props.specials.map(special => {
       return (
-        <div className="item" key={recipe.uuid}>
-          {this.renderAdmin(recipe)}
+        <div className="item" key={special.uuid}>
+          {this.renderAdmin(special)}
           <i className="large middle aligned icon camera" />
           <div className="content">
-          <Link to={`/recipe/${recipe.uuid}`} className="header">
-              {recipe.title}
-            </Link>
-            <div className="description">{recipe.description}</div>
+          {/* <Link to={`/special/${special.uuid}`} className="header"> */}
+              {special.title}
+            {/* </Link> */}
+            <div className="description">{special.text}</div>
           </div>
         </div>
       );
@@ -52,8 +50,8 @@ class RecipeList extends React.Component {
     // if (this.props.isSignedIn) {
       return (
         <div style={{ textAlign: 'right' }}>
-          <Link to="/recipe/new" className="ui button primary">
-            Create Recipe
+          <Link to="/special/new" className="ui button primary">
+            Create Special
           </Link>
         </div>
       );
@@ -63,7 +61,7 @@ class RecipeList extends React.Component {
   render() {
     return (
       <div style={{width: window.visualViewport.width * .8, marginRight: 'auto', marginLeft: 'auto'}}>
-        <h2>Recipes</h2>
+        <h2>Specials</h2>
         <div className="ui celled list">{this.renderList()}</div>
         {this.renderCreate()}
       </div>
@@ -73,9 +71,8 @@ class RecipeList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    recipes: Object.values(state.recipes),
     specials: Object.values(state.specials)
   };
 };
 
-export default connect(mapStateToProps, { fetchRecipes, fetchSpecials })(RecipeList);
+export default connect(mapStateToProps, { fetchSpecials })(SpecialList);

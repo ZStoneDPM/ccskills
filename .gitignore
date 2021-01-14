@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/src/components/a_backup
 /.pnp
 .pnp.js
 

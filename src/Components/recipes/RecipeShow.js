@@ -82,8 +82,8 @@ class RecipeShow extends React.Component {
     const directions = this.props.recipe.directions;
     const countIngredients = this.props.recipe.ingredients;
     const ingredientCount = Object.keys(countIngredients).length;
-    const specials = this.props.specials;
-    console.log('item: '+JSON.stringify(specials));
+    // const specials = this.props.specials;
+    // console.log('item: '+JSON.stringify(specials));
 
     const { uuid, title, description, prepTime, servings, cookTime, ingredients,
      editDate, postDate } = this.props.recipe;
@@ -96,7 +96,7 @@ class RecipeShow extends React.Component {
       },
       topTitle: {
         position: "sticky",
-        top: 49,
+        top: 47,
         left: 0,
         right: 0,
         zIndex: 99,

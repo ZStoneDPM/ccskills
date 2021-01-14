@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import { Table, ListGroup, Card, Alert, Button } from "react-bootstrap";
 import { updateMarker } from "../reducers/user";
 import { connect } from "react-redux";
-import { fetchRecipe, fetchSpecials } from '../actions';
+import { fetchRecipe, fetchSpecials } from "../actions";
 
-// const Recipe = ({ this.props.user.recipes, apiRoot }) => {
 class RecipeDetail extends Component {
-  state={
+  state = {
     specials: this.props.fetchSpecials(),
     recipes: this.props.fetchRecipes(),
-  }
+  };
   componentDidMount() {
     const { id } = this.props.match.params;
     this.props.fetchRecipe(id);
@@ -22,8 +21,6 @@ class RecipeDetail extends Component {
     window.location = `${window.location.origin}/map`;
     //go to page
   }
-
-  
 
   checkMatch(ingredientUUID) {
     const specials = this.props.user.updateSpecialsData;
@@ -60,12 +57,9 @@ class RecipeDetail extends Component {
   render() {
     const recipes = this.props.user.recipeDetail;
     const apiRoot = this.props.user.updateAPIRoot;
-    // const specials = this.props.user.updateSpecialsData;
     const directions = recipes.directions;
     const ingredients = recipes.ingredients;
     const ingredientCount = Object.keys(ingredients).length;
-    // const result = ingredients.filter(x => specials.some(y => x.uuid === y.ingredientId))
-    // console.log(result)
 
     const styles = {
       cookingInstructions: {
@@ -153,16 +147,10 @@ class RecipeDetail extends Component {
   }
 }
 
-// const mapStateToProps = (state) => ({
-//   user: state.user,
-// });
-
-// export default connect(mapStateToProps)(RecipeDetail);
 const mapStateToProps = (state, ownProps) => {
   return { recipe: state.recipes[ownProps.match.params.id] };
 };
 
-export default connect(
-  mapStateToProps,
-  { fetchRecipe, fetchSpecials }
-)(RecipeDetail);
+export default connect(mapStateToProps, { fetchRecipe, fetchSpecials })(
+  RecipeDetail
+);

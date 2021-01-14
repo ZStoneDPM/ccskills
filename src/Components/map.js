@@ -4,20 +4,6 @@ import GoogleMapReact from 'google-map-react';
 import Marker from './marker';
  
 class SimpleMap extends Component {
-// getLat(arr){
-//     var lat = arr.match(/([^,]*),(.*)/);
-//     // console.log(`lat: ${lat[1]}`)
-//     return lat[1];
-// }
-// getLon(arr){
-//     var lon = arr.match(/([^,]*),(.*)/);
-//     // console.log(`lon: ${lon[2]}`)
-//     return lon[2];
-// }  
-// componentDidMount() {
-//   const { lat, lon } = this.props.match.params;
-// }
-
   static defaultProps = {
     center: {
       lat: 43.03684041381049,//would typically use geocoding api as well to get users current location

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Carousel } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import { fetchRecipes, fetchSpecials } from '../actions';
-import noImage from '../assets/noimage.jpeg';
+import { Link } from "react-router-dom";
+import { fetchRecipes, fetchSpecials } from "../actions";
+import noImage from "../assets/noimage.jpeg";
 
 class LandingPage extends Component {
   state = {
@@ -17,13 +17,13 @@ class LandingPage extends Component {
     this.props.fetchSpecials();
   }
 
-  ifHasImage(index){
-    const apiRoot = 'http://localhost:3001';
+  ifHasImage(index) {
+    const apiRoot = "http://localhost:3001";
     const recipes = this.props.recipes[index];
-    if(recipes.hasOwnProperty('images')){
+    if (recipes.hasOwnProperty("images")) {
       return `${apiRoot}${recipes.images.full}`;
     } else {
-      return `${window.location.origin}${noImage}`
+      return `${window.location.origin}${noImage}`;
     }
   }
 
@@ -53,7 +53,7 @@ class LandingPage extends Component {
 
     return (
       <React.Fragment>
-          <div style={styles.frame}>
+        <div style={styles.frame}>
           <div style={styles.Carousel}>
             <Carousel>
               {this.props.recipes.map((recipe, index) => (
@@ -65,22 +65,16 @@ class LandingPage extends Component {
                   <img
                     className={"d-block w-100"}
                     style={styles.carouselImage}
-                    src={`${this.ifHasImage(index)}`/*recipe.images.full */}
+                    src={`${this.ifHasImage(index)}` /*recipe.images.full */}
                     alt={`${index} slide`}
                   />
                   <Carousel.Caption>
                     <h3>{recipe.title}</h3>
                     <p>{recipe.description}</p>
                     <Link to={`/recipe/${recipe.uuid}`} className="header">
-                    <Button
-                      className="btn btn-primary"
-                      type="button"
-                     
-                    >
-                     
-                      View Recipe
-                     
-                    </Button> 
+                      <Button className="btn btn-primary" type="button">
+                        View Recipe
+                      </Button>
                     </Link>
                   </Carousel.Caption>
                 </Carousel.Item>
@@ -96,7 +90,9 @@ class LandingPage extends Component {
 const mapStateToProps = (state) => ({
   user: state.user,
   recipes: Object.values(state.recipes),
-  specials: Object.values(state.specials)
+  specials: Object.values(state.specials),
 });
 
-export default connect(mapStateToProps, { fetchRecipes, fetchSpecials })(LandingPage);
+export default connect(mapStateToProps, { fetchRecipes, fetchSpecials })(
+  LandingPage
+);
